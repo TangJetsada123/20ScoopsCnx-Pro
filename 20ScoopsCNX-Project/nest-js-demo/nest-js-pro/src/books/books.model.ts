@@ -1,18 +1,16 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 
-export const bookSchema = new mongoose.Schema({
-   name: String,
-   id: String,
-   genre: String   
-});
+export type BookDocument = Book & Document;
 
-
-
-export interface Books{
-    
+@Schema()
+export class Book{
+    @Prop()
     name: string;
-    id: string;
-    genre: string;
 
+    @Prop()
+    genre: string;
 }
+
+export const bookSchema = SchemaFactory.createForClass(Book)
