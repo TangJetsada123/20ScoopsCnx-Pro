@@ -6,6 +6,7 @@ import { CreateBookDto } from './dto/books.dto';
 
 @Injectable()
 export class BooksService {
+   book: any;
    constructor(@InjectModel(Book.name) private  readonly BooksModel: Model<BookDocument>) {}
    
    async create(createBookDto: CreateBookDto): Promise<Book>{
@@ -22,29 +23,10 @@ export class BooksService {
         return books;
      } 
 
-   async findByName(book: Book,createBookDto: CreateBookDto): Promise<Book>{
-   try{
-      const {
-         search
-      } = createBookDto
-
-      const query = this.BooksModel.createQueryBuilder('book')
-      query.where({book})
-      
-      if(search){
-         query.adnWhere({search: `%${search}%`})
-      }
-
-      const books = await query.getMany()
-
+   async findByName(createBookDto: CreateBookDto){
+      const books = await this.BooksModel.find(createBookDto);
       return books;
-  
-  
-   }
-
-  
-
-}
+   }  
 
    async delete(id:string){
       const book = await this.BooksModel.findByIdAndRemove({_id: id }).exec();

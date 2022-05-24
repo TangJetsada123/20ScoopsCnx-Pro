@@ -4,7 +4,6 @@ import { CreateBookDto } from './dto/books.dto';
 import { FileInterceptor,FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import {editFileName,imageFileFilter} from '../middleware/middleware'
-import { fileURLToPath } from 'url';
 
 @Controller('books')
 export class BooksController {
@@ -15,13 +14,11 @@ export class BooksController {
         await this.bookService.create(createBookDto)
     }
 
-
     @Get('filter')
-    async getTask(@Query() createBookDTO: CreateBookDto){
-        console.log(createBookDTO);
+    async getTask(@Query() createBookDto:CreateBookDto){
         
-        if(createBookDTO){
-           return this.bookService.findByName(createBookDTO)
+      if(createBookDto){
+          return this.bookService.findByName(createBookDto);
        }else{
            const books = await this.bookService.findAll();
            return  books;
