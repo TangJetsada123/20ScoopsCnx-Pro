@@ -4,6 +4,7 @@ import { CreateBookDto } from './dto/books.dto';
 import { FileInterceptor,FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import {editFileName,imageFileFilter} from '../middleware/middleware'
+import { fileURLToPath } from 'url';
 
 @Controller('books')
 export class BooksController {
@@ -42,25 +43,7 @@ export class BooksController {
         return this.bookService.delete(id);
     }
     
-    @Post()
-      @UseInterceptors(
-        FileInterceptor('image', {
-          storage: diskStorage({
-            destination: './files',
-            filename: editFileName,
-          }),
-          fileFilter: imageFileFilter,
-        }),
-      )
-      uploadedFile(@UploadedFile() file) {
-        const response = {
-          originalname: file.originalname,
-          filename: file.filename,
-        };
-        return response;
-      }
-
-    @Post('multiple')
+    @Post('upload')
     @UseInterceptors(
       FilesInterceptor('image', 20, {
         storage: diskStorage({
@@ -79,15 +62,8 @@ export class BooksController {
         };
         response.push(fileReponse);
       });
-      return response;
+      const books = this.bookService.create(files);
+      return books;
     }
-   
-   
-    @Get(':imgpath')
-    seeUploadedFile(@Param('imgpath') image, @Res() res) {
-      return res.sendFile(image, { root: './files' });
-    }
-    
-    
 
-}
+  }

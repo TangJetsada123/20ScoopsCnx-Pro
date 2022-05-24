@@ -32,9 +32,17 @@ export class BooksService {
       const book = await this.BooksModel.findByIdAndRemove({_id: id }).exec();
       return book;
    }
+   
+   
+   
+   
+}
+
+   
+
 
   
-}
+
 
 
 
