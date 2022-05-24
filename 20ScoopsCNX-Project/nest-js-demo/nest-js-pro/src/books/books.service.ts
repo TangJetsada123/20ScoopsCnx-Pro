@@ -1,13 +1,15 @@
-import { ConsoleLogger, Injectable, Query, UploadedFile } from '@nestjs/common';
+import { ConsoleLogger, Injectable, Query, UploadedFile} from '@nestjs/common';
 import { InjectModel} from '@nestjs/mongoose'
 import { Model } from 'mongoose';
 import {Book, BookDocument}  from './books.model'
 import { CreateBookDto } from './dto/books.dto';
 
+
 @Injectable()
 export class BooksService {
    book: any;
    constructor(@InjectModel(Book.name) private  readonly BooksModel: Model<BookDocument>) {}
+
    
    async create(createBookDto: CreateBookDto): Promise<Book>{
       const book = await this.BooksModel.create(createBookDto);
@@ -32,13 +34,8 @@ export class BooksService {
       const book = await this.BooksModel.findByIdAndRemove({_id: id }).exec();
       return book;
    }
-   
-   
-   
-   
-}
 
-   
+}
 
 
   
