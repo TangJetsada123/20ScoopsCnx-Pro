@@ -14,10 +14,6 @@ export class BooksController {
     async create(@Body() createBookDto: CreateBookDto){
         await this.bookService.create(createBookDto)
     }
-    @Get()
-    async getBookAll(){
-        const books = await this.bookService.findAll();
-            return books;}
 
 
     @Get('filter')

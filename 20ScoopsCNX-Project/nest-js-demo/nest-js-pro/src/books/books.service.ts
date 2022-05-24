@@ -23,8 +23,7 @@ export class BooksService {
      } 
 
    async findByName(createBookDto: CreateBookDto){
-      let findName = await this.BooksModel.find(createBookDto).exec();
-      console.log(findName)
+      let findName = await this.BooksModel.find(createBookDto);
       return findName;
    }
 
