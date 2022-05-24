@@ -22,10 +22,29 @@ export class BooksService {
         return books;
      } 
 
-   async findByName(createBookDto: CreateBookDto){
-      let findName = await this.BooksModel.find(createBookDto);
-      return findName;
+   async findByName(book: Book,createBookDto: CreateBookDto): Promise<Book>{
+   try{
+      const {
+         search
+      } = createBookDto
+
+      const query = this.BooksModel.createQueryBuilder('book')
+      query.where({book})
+      
+      if(search){
+         query.adnWhere({search: `%${search}%`})
+      }
+
+      const books = await query.getMany()
+
+      return books;
+  
+  
    }
+
+  
+
+}
 
    async delete(id:string){
       const book = await this.BooksModel.findByIdAndRemove({_id: id }).exec();
